@@ -21,6 +21,14 @@ lowercaseOutputName: true
 
 rules:
   # Special cases and very specific rules
+  - pattern: 'kafka.producer<type=producer-metrics, client-id=(.+)><>request-latency-avg'
+    name: kafka_producer_request_latency_ms_avg
+    valueFactor: 0.001
+    labels:
+      client_id: $1
+    help: "Producer average request latency"
+    type: GAUGE
+    attrNameSnakeCase: false
   - pattern: kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.*)><>Value
     name: kafka_server_$1_$2
     type: GAUGE

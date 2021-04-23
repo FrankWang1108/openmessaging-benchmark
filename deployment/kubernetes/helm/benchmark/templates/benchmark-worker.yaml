@@ -34,14 +34,26 @@ spec:
       component: worker
   template:
     metadata:
+      annotations:
+        prometheus_io_port: "9404"
+        prometheus_io_scrape: 'true'
       labels:
         app: {{ .Release.Name }}
         component: worker
     spec:
+      # nodeSelector:
+      #   cloud.google.com/gke-nodepool: benchmark-pool
       containers:
         - name: {{ .Release.Name }}-worker
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           image: {{ .Values.image }}
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 8Gi
+            limits:
+              cpu: 2000m
+              memory: 16Gi
           command: ["sh", "-c"]
           args:
             - >

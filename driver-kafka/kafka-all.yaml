@@ -28,12 +28,12 @@ topicConfig: |
   min.insync.replicas=2
 
 commonConfig: |
-  bootstrap.servers=localhost:9092
+  bootstrap.servers=my-cluster-kafka-bootstrap:9092
 
 producerConfig: |
   acks=all
-  linger.ms=100
-  batch.size=1048576
+  linger.ms=5
+  batch.size=108576
 
 consumerConfig: |
   auto.offset.reset=earliest

@@ -29,6 +29,12 @@ spec:
     - name: {{ .Release.Name }}-driver
       imagePullPolicy: {{ .Values.imagePullPolicy }}
       image: {{ .Values.image }}
+      resources:
+        requests:
+          cpu: 2000m
+          memory: 10Gi
+        limits:
+          memory: 20Gi
       env:
         - name: NUM_WORKERS
           value: "{{ .Values.numWorkers }}"
@@ -39,3 +45,5 @@ spec:
         - >
           echo "bin/benchmark --drivers {{ .Values.driver }} --workers $WORKERS {{ .Values.workload }}" > example-run.sh &&
           tail -f /dev/null
+  # nodeSelector:
+  #   cloud.google.com/gke-nodepool: benchmark-pool
