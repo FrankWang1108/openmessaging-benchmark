@@ -1,0 +1,58 @@
+---
+lowercaseOutputName: false
+lowercaseOutputLabelNames: false
+rules:
+  # covers all producer metrics
+  - pattern: 'kafka.producer<type=producer-metrics, client-id=(.+)><>([a-z-]+)'
+    name: kafka_producer_$2
+    labels:
+      client_id: $1
+    type: GAUGE
+
+  - pattern: 'kafka.producer<type=producer-node-metrics, client-id=(.+), node-id=(.+)><>([a-z-]+)'
+    name: kafka_producer_node_$3
+    labels:
+      client_id: $1
+      node_id: $2
+    type: GAUGE
+
+  - pattern: 'kafka.producer<type=producer-topic-metrics, client-id=(.+), topic=(.+)><>([a-z-]+)'
+    name: kafka_producer_topic_$3
+    labels:
+      client_id: $1
+      topic: $2
+    type: GAUGE
+
+  # covers all consumer metrics
+  - pattern: 'kafka.consumer<type=consumer-metrics, client-id=(.+)><>([a-z-]+)'
+    name: kafka_consumer_$2
+    labels:
+      client_id: $1
+    type: GAUGE
+
+  - pattern: 'kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)><>([a-z-]+)'
+    name: kafka_consumer_group_$2
+    labels:
+      client_id: $1
+    type: GAUGE
+
+  - pattern: 'kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+)><>([a-z-]+)'
+    name: kafka_consumer_fetch_$2
+    labels:
+      client_id: $1
+    type: GAUGE
+
+  - pattern: 'kafka.consumer<type=consumer-fetch-manager-metrics, partition=(.+), topic=(.+), client-id=(.+)><>([a-z-]+)'
+    name: kafka_consumer_node_$4
+    labels:
+      partition: $1
+      topic: $2
+      client_id: $3
+    type: GAUGE
+
+  - pattern: 'kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+)><>([a-z-]+)'
+    name: kafka_consumer_fetch_topic_$3
+    labels:
+      client_id: $1
+      topic: $2
+    type: GAUGE

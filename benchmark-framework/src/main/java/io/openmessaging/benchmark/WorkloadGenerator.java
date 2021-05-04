@@ -24,6 +24,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -106,7 +107,21 @@ public class WorkloadGenerator implements AutoCloseable {
         ProducerWorkAssignment producerWorkAssignment = new ProducerWorkAssignment();
         producerWorkAssignment.keyDistributorType = workload.keyDistributor;
         producerWorkAssignment.publishRate = targetPublishRate;
-        producerWorkAssignment.payloadData = payloadReader.load(workload.payloadFile);
+        producerWorkAssignment.payloadData = new ArrayList<>();
+
+        if(workload.useRandomizedPayloads) {
+            Random r = new Random();
+            int randomBytes = (int)(workload.messageSize);
+            for(int i = 0; i<workload.randomizedPayloadPoolSize; i++) {
+                byte[] randArray = new byte[randomBytes];
+                r.nextBytes(randArray);
+                producerWorkAssignment.payloadData.add(randArray);
+            }
+        }
+        else {
+            producerWorkAssignment.payloadData.add(payloadReader.load(workload.payloadFile));
+        }
+
 
         log.info("----- Starting warm-up traffic ------");
 

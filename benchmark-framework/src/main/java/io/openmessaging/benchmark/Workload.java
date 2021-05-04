@@ -33,6 +33,9 @@ public class Workload {
 
     public int messageSize;
 
+    public boolean useRandomizedPayloads;
+    public int randomizedPayloadPoolSize;
+
     public String payloadFile;
 
     public int subscriptionsPerTopic;

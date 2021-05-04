@@ -24,11 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -225,8 +221,11 @@ public class LocalWorker implements Worker, ConsumerCallback {
     }
 
     private void submitProducersToExecutor(List<BenchmarkProducer> producers, KeyDistributor keyDistributor,
-            byte[] payloadData) {
+                                           List<byte[]> payloads) {
         executor.submit(() -> {
+            int payloadCount = payloads.size();
+            Random r = new Random();
+            byte[] firstPayload = payloads.get(0);
             try {
                 while (!testCompleted) {
                     while (producersArePaused) {
@@ -237,6 +236,7 @@ public class LocalWorker implements Worker, ConsumerCallback {
                         }
                     }
 
+                    byte[] payloadData = payloadCount <= 1 ? firstPayload : payloads.get(r.nextInt(payloadCount));
                     producers.forEach(producer -> {
                         rateLimiter.acquire();
                         final long sendTime = System.nanoTime();

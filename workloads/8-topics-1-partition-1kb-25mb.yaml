@@ -17,9 +17,17 @@
 # under the License.
 #
 
-numWorkers: 70
-image: registry.dev.databricks.com/kafka/openmessaging-benchmark:latest
-#image: frankwang1108/benchmark:latest
-imagePullPolicy: Always
-workload: workloads/1-topic-16-partitions-1kb.yaml
-driver: driver-pulsar/pulsar.yaml
+name: 8-topics-1-partition-1kb-25mb
+
+topics: 8
+partitionsPerTopic: 1
+messageSize: 1024
+payloadFile: "payload/payload-1Kb.data"
+subscriptionsPerTopic: 1
+consumerPerSubscription: 1
+producersPerTopic: 1
+
+producerRate: 25000 #25Mb
+
+consumerBacklogSizeGB: 0
+testDurationMinutes: 5
