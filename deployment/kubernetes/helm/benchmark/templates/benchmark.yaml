@@ -29,6 +29,9 @@ spec:
     - name: {{ .Release.Name }}-driver
       imagePullPolicy: {{ .Values.imagePullPolicy }}
       image: {{ .Values.image }}
+      volumeMounts:
+        - name: secret-volume
+          mountPath: /data/p12
       resources:
         requests:
           cpu: 2000m
@@ -45,5 +48,9 @@ spec:
         - >
           echo "bin/benchmark --drivers {{ .Values.driver }} --workers $WORKERS {{ .Values.workload }}" > example-run.sh &&
           tail -f /dev/null
+  volumes:
+    - name: secret-volume
+      secret:
+        secretName: my-cluster-cluster-ca-cert
   # nodeSelector:
   #   cloud.google.com/gke-nodepool: benchmark-pool

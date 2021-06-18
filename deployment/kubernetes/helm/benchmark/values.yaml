@@ -17,7 +17,7 @@
 # under the License.
 #
 
-numWorkers: 70
+numWorkers: 5
 image: registry.dev.databricks.com/kafka/openmessaging-benchmark:latest
 #image: frankwang1108/benchmark:latest
 imagePullPolicy: Always
